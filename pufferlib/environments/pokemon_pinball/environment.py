@@ -14,7 +14,7 @@ def env_creator(name='pokemon_pinball'):
 def make(name, headless: bool = True, state_path=None, buf=None):
     '''Pokemon Pinball'''
     env = PokemonPinballEnv(config={'headless': headless})
-    env = RenderWrapper(env)
+    #env = RenderWrapper(env)
     env = pufferlib.postprocess.EpisodeStats(env)
     return pufferlib.emulation.GymnasiumPufferEnv(env=env, buf=buf)
 
