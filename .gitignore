@@ -144,6 +144,8 @@ dmypy.json
 
 # ROMs
 *.gb
+*.gbc
+*.gbc.ram
 
 checkpoints/
 experiments/
