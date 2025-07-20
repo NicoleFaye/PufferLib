@@ -52,7 +52,7 @@ if not os.path.exists(RAYLIB_WASM):
 # - <= 0.20 is missing dict methods for gym.spaces.Dict
 # - 0.18-0.21 require setuptools<=65.5.0
 
-GYMNASIUM_VERSION = '0.29.1'
+GYMNASIUM_VERSION = '1.0.0'
 GYM_VERSION = '0.23'
 PETTINGZOO_VERSION = '1.24.1'
 
