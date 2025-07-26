@@ -5,7 +5,7 @@ import functools
 from pokemon_pinball_gym import PokemonPinballEnv
 
 import pufferlib.emulation
-import pufferlib.postprocess
+import pufferlib
 
 
 def env_creator(name='pokemon_pinball'):
@@ -18,7 +18,7 @@ def make(name, headless: bool = True, state_path=None, buf=None):
     
     #env = gymnasium.wrappers.FrameStack(env, 4)
     
-    env = pufferlib.postprocess.EpisodeStats(env)
+    env = pufferlib.EpisodeStats(env)
     return pufferlib.emulation.GymnasiumPufferEnv(env=env, buf=buf)
 
 class RenderWrapper(gymnasium.Wrapper):
