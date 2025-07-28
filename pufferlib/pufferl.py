@@ -30,6 +30,7 @@ import pufferlib
 import pufferlib.sweep
 import pufferlib.vector
 import pufferlib.pytorch
+import pufferlib.profiler as profiler
 try:
     from pufferlib import _C
 except ImportError:
@@ -209,6 +210,9 @@ class PuffeRL:
     def evaluate(self):
         profile = self.profile
         epoch = self.epoch
+        # make profiler available to env.code for subsections
+        profiler.current_profile = self.profile
+        profiler.current_epoch   = epoch
         profile('eval', epoch)
         profile('eval_misc', epoch, nest=True)
 
@@ -312,6 +316,9 @@ class PuffeRL:
     def train(self):
         profile = self.profile
         epoch = self.epoch
+        # make profiler available to env.code for subsections
+        profiler.current_profile = self.profile
+        profiler.current_epoch   = epoch
         profile('train', epoch)
         losses = defaultdict(float)
         config = self.config
@@ -579,6 +586,11 @@ class PuffeRL:
         p.add_row(*fmt_perf('Evaluate', b1, delta, profile.eval, b2, c2))
         p.add_row(*fmt_perf('  Forward', c2, delta, profile.eval_forward, b2, c2))
         p.add_row(*fmt_perf('  Env', c2, delta, profile.env, b2, c2))
+        # env subsections
+        for key, prof_item in profile.profiles.items():
+            if key.startswith("env_"):
+                display = "    " + key[len("env_"):].replace("_"," ").capitalize()
+                p.add_row(*fmt_perf(display, c2, delta, prof_item, b2, c2))
         p.add_row(*fmt_perf('  Copy', c2, delta, profile.eval_copy, b2, c2))
         p.add_row(*fmt_perf('  Misc', c2, delta, profile.eval_misc, b2, c2))
         p.add_row(*fmt_perf('Train', b1, delta, profile.train, b2, c2))
